@@ -1,7 +1,7 @@
-package io.github.monun.sample.internal
+package io.github.seorin21.sample.internal
 
-import io.github.monun.sample.LibraryLoader
-import io.github.monun.sample.Sample
+import io.github.seorin21.sample.loader.LibraryLoader
+import io.github.seorin21.sample.Sample
 
 class SampleImpl: Sample {
     private val version = LibraryLoader.loadNMS(Version::class.java)

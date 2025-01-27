@@ -20,7 +20,7 @@ subprojects {
     apply(plugin = rootProject.libs.plugins.kotlin.get().pluginId)
 
     repositories {
-        maven("https://papermc.io/repo/repository/maven-public/")
+        maven("https://repo.papermc.io/repository/maven-public/")
     }
 
     dependencies {
@@ -68,6 +68,7 @@ tasks {
 
                 rename("api")
                 rename("core")
+                rename("dongle")
                 rename("plugin")
                 rename("publish")
             }

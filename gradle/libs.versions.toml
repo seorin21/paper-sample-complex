@@ -1,15 +1,20 @@
 [versions]
-kotlin = "1.8.22"
-dokka = "1.8.20"
-shadow = "7.1.2"
-paper = "1.17.1-R0.1-SNAPSHOT"
-paperweight = "1.5.5"
+kotlin = "2.1.0"
+dokka = "2.0.0"
+paper = "1.20-R0.1-SNAPSHOT"
+paperweight = "1.7.7"
+coroutines = "1.10.1"
+json = "1.8.0"
+protobuf = "1.8.0"
 
 [libraries]
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
+coroutines = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-core", version.ref = "coroutines" }
+json = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-json", version.ref = "json" }
+protobuf = { group = "org.jetbrains.kotlinx", name="kotlinx-serialization-protobuf", version.ref = "protobuf" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
