@@ -1,7 +1,11 @@
 plugins {
-    alias(libs.plugins.shadow)
     `maven-publish`
     signing
+}
+
+projectPlugin.tasks.named("clipJar") {
+    dependsOn(tasks.named("publishApiPublicationToServerRepository"))
+    dependsOn(tasks.named("publishCorePublicationToServerRepository"))
 }
 
 publishing {
@@ -38,14 +42,13 @@ publishing {
     publications {
         fun MavenPublication.setup(target: Project) {
             artifactId = target.name
-
             from(target.components["java"])
             artifact(target.tasks["sourcesJar"])
             artifact(target.tasks["dokkaJar"])
 
             pom {
                 name.set(target.name)
-                description.set("Chaos! Destruction! Oblivion!")
+                description.set("유튜브 \"서린\" 종합 프로젝트를 위한, 의존성 라이브러리입니다.")
                 url.set("https://github.com/monun/${rootProject.name}")
 
                 licenses {
@@ -57,19 +60,19 @@ publishing {
 
                 developers {
                     developer {
-                        id.set("monun")
-                        name.set("Monun")
-                        email.set("monun1010@gmail.com")
-                        url.set("https://github.com/monun")
+                        id.set("seorin21")
+                        name.set("서린")
+                        email.set("seorin021@gmail.com")
+                        url.set("https://github.com/seorin21")
                         roles.addAll("developer")
                         timezone.set("Asia/Seoul")
                     }
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/monun/${rootProject.name}.git")
-                    developerConnection.set("scm:git:ssh://github.com:monun/${rootProject.name}.git")
-                    url.set("https://github.com/monun/${rootProject.name}")
+                    connection.set("scm:git:git://github.com/seorin21/${rootProject.name}.git")
+                    developerConnection.set("scm:git:ssh://github.com:seorin21/${rootProject.name}.git")
+                    url.set("https://github.com/seorin21/${rootProject.name}")
                 }
             }
         }
@@ -80,15 +83,9 @@ publishing {
 
         create<MavenPublication>("core") {
             setup(projectCore)
-
-            artifact(projectCore.tasks["reobfJar"]) {
-                classifier = null
-            }
-
-            if (hasProperty("dev")) {
-                artifact(projectCore.tasks["devJar"])
-            }
+            artifact(coreReobfJar)
         }
+
     }
 }
 

@@ -10,7 +10,7 @@ classifier="dev"
 set -a
 
 ######################## Upstream Settings #########################
-REPO_BASE_URL="https://raw.githubusercontent.com/monun/minecraft-server-launcher"
+REPO_BASE_URL="https://raw.githubusercontent.com/seorin21/minecraft-server-launcher"
 REPO_BRANCH="master"
 
 REPO_ROOT="$REPO_BASE_URL/$REPO_BRANCH"
