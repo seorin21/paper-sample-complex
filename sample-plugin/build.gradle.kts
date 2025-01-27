@@ -83,23 +83,10 @@ tasks {
         }
     }.also { jar ->
         register<Copy>("test${classifier.replaceFirstChar { it.titlecase() }}Jar") {
-//            val prefix = rootProject.name
             val plugins = rootProject.file(".server/plugins-$classifier")
-//            val update = File(plugins, "update")
-//            val regex = Regex("($prefix)(.*)(\\.jar)")
 
             from(jar)
-
-//            if (plugins.list()?.any { regex.matches(it) } == true) {
-//                into(update)
-//            } else {
             into(plugins)
-//            }
-
-//            doLast {
-//                update.mkdirs()
-//                File(update, "RELOAD").delete()
-//            }
         }
     }
 
