@@ -12,22 +12,7 @@ extra.apply {
     set("packageName", rootProject.name.replace("-", ""))
     set("kotlinVersion", libs.versions.kotlin.get())
     set("paperVersion", libs.versions.paper.get().split('.').take(2).joinToString(separator = ".").replace("-R0", "")) //.replace("-R0", "") << 1.x.x가 아닌 1.x 버전인 경우, R0이 포함될 수 있음.
-    set("pluginCommands", "")
     set("pluginLibraries", "")
-
-    val pluginCommands = LinkedHashSet<String>()
-    val pluginCommandPath = "${project.projectDir.path}\\src\\main\\kotlin\\${project.group.toString().split(".").joinToString("\\")}\\${pluginName.lowercase()}\\commands"
-    File(pluginCommandPath).walk().forEach {
-        if (it.isFile) {
-            var commandName = it.name.split("Command").take(1).joinToString().replaceFirstChar { char -> char.lowercase() }
-            commandName = commandName.mapIndexed { index, char ->
-                "${if (index > 0 && char.isUpperCase() && commandName[index - 1].isLowerCase()) "_" else ""}${char}"
-            }.joinToString("")
-
-            pluginCommands += commandName.lowercase()
-            set("pluginCommands", pluginCommands.joinToString("\n  ") { "$it:\n    description: plugin.yml 자동 작성으로 등록된 커맨드입니다.\n    usage: /<command>" })
-        }
-    }
 
     val pluginLibraries = LinkedHashSet<String>()
 

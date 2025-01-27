@@ -77,7 +77,7 @@ object LibraryLoader {
      * 패키지는 <[type]의 패키지>.[minecraftVersion].NMS + <[type]의 이름> 입니다.
      *
      *
-     * ex) `io.github.sample.Sample -> io.github.sample.v1_18_R1.NMSSample`
+     * ex) `io.github.sample.Sample -> io.github.sample.v1_18.NMSSample`
      */
     fun <T> loadNMS(type: Class<T>, vararg initArgs: Any? = emptyArray()): T {
         return loadClass(type, { clazz ->

@@ -1,4 +1,4 @@
-package io.github.seorin21.sample.v1_21.internal
+package io.github.seorin21.sample.v1_20.internal
 
 import org.bukkit.Bukkit
 import io.github.seorin21.sample.internal.Version
