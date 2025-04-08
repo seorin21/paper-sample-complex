@@ -3,5 +3,5 @@ version: '${version}'
 main: '${group}.${packageName}.plugin.${pluginName}Plugin'
 api-version: '${paperVersion}'
 libraries:
-    ${pluginLibraries}
-    - '${group}:${packageName}-core:${version}'
+  ${pluginLibraries}
+  - '${group}:${packageName}-core:${version}'

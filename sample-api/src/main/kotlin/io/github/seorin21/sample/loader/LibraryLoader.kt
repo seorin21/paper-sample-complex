@@ -25,28 +25,15 @@ import java.lang.reflect.InvocationTargetException
  */
 @Suppress("unused")
 object LibraryLoader {
-    private fun <T> loadClass(
-        type: Class<T>,
-        classNameProvider: (Class<T>) -> List<String>,
-        vararg initArgs: Any?
-    ): T {
+    private fun <T> loadClass(className: String, type: Class<T>, vararg initArgs: Any?): T {
         val parameterTypes = initArgs.map { it?.javaClass }.toTypedArray()
-        val candidates = classNameProvider(type)
 
-        val loadedClass = candidates.firstNotNullOfOrNull { candidate ->
-            try {
-                Class.forName(candidate, true, type.classLoader).asSubclass(type)
-            } catch (e: ClassNotFoundException) {
-                null
-            }
-        } ?: throw UnsupportedOperationException("${type.name} does not support this version or implementation", ClassNotFoundException())
-
-        try {
-            val constructor = loadedClass.getConstructor(*parameterTypes)
-                ?: throw UnsupportedOperationException("${type.name} does not have Constructor for [${parameterTypes.joinToString()}]")
-            return constructor.newInstance(*initArgs) as T
-        } catch (e: NoSuchMethodException) {
-            throw UnsupportedOperationException("${type.name} does not have Constructor for [${parameterTypes.joinToString()}]", e)
+        return try {
+            val clazz = Class.forName(className, true, type.classLoader).asSubclass(type)
+            val constructor = clazz.getConstructor(*parameterTypes)
+            constructor.newInstance(*initArgs) as T
+        } catch (e: ClassNotFoundException) {
+            throw UnsupportedOperationException("${type.name} does not have implement", e)
         } catch (e: IllegalAccessException) {
             throw UnsupportedOperationException("${type.name} constructor is not visible", e)
         } catch (e: InstantiationException) {
@@ -63,12 +50,10 @@ object LibraryLoader {
      *
      * ex) `io.github.sample.Sample -> io.github.sample.internal.SampleImpl`
      */
-    fun <T> loadImplement(type: Class<T>, vararg initArgs: Any? = emptyArray()): T {
-        return loadClass(type, { clazz ->
-            val packageName = clazz.`package`.name
-            val className = "${clazz.simpleName}Impl"
-            listOf("$packageName.internal.$className")
-        }, *initArgs)
+    fun <T> loadImplement(type: Class<T>, vararg initArgs: Any?): T {
+        val packageName = type.`package`.name
+        val className = "${type.simpleName}Impl"
+        return loadClass("$packageName.internal.$className", type, *initArgs)
     }
 
     /**
@@ -79,22 +64,24 @@ object LibraryLoader {
      *
      * ex) `io.github.sample.Sample -> io.github.sample.v1_18.NMSSample`
      */
-    fun <T> loadNMS(type: Class<T>, vararg initArgs: Any? = emptyArray()): T {
-        return loadClass(type, { clazz ->
-            val packageName = clazz.`package`.name
-            val className = "NMS${clazz.simpleName}"
-            buildList {
-                add("$packageName.$libraryVersion.$className")
-                val lastDot = packageName.lastIndexOf('.')
-                if (lastDot > 0) {
-                    val superPackageName = packageName.substring(0, lastDot)
-                    val subPackageName = packageName.substring(lastDot + 1)
-                    add("$superPackageName.$libraryVersion.$subPackageName.$className")
-                }
-            }
-        }, *initArgs)
+    fun <T> loadNMS(type: Class<T>, vararg initArgs: Any?): T {
+        val packageName = type.`package`.name
+        val className = "NMS${type.simpleName}"
+        val candidates = listOf(
+            "$packageName.$libraryVersion.$className",
+            "${
+                packageName.substringBeforeLast('.', "") + ".$libraryVersion." +
+                        packageName.substringAfterLast('.')
+            }.$className"
+        )
+
+        candidates.forEach { candidate ->
+            runCatching { return loadClass(candidate, type, *initArgs) }
+        }
+
+        throw UnsupportedOperationException("${type.name} does not support this version: $libraryVersion")
     }
 
-    val minecraftVersion by lazy { Bukkit.getServer().minecraftVersion }
-    val libraryVersion by lazy { "v${minecraftVersion.replace('.', '_')}" }
+    private val minecraftVersion by lazy { Bukkit.getServer().minecraftVersion }
+    private val libraryVersion by lazy { "v${minecraftVersion.replace('.', '_')}" }
 }
