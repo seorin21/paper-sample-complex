@@ -6,12 +6,12 @@ dependencies {
 }
 
 extra.apply {
-    val pluginName = rootProject.name.split('-').joinToString("") { it.replaceFirstChar { char -> char.uppercase() } }
+    val pluginName = rootProject.name.split("-").joinToString("") { it.replaceFirstChar { char -> char.uppercase() } }
 
     set("pluginName", pluginName)
     set("packageName", rootProject.name.replace("-", ""))
     set("kotlinVersion", libs.versions.kotlin.get())
-    set("paperVersion", libs.versions.paper.get().split('.').take(2).joinToString(separator = ".").replace("-R0", "")) //.replace("-R0", "") << 1.x.x가 아닌 1.x 버전인 경우, R0이 포함될 수 있음.
+    set("paperVersion", libs.versions.paper.get().split(".").take(2).joinToString(separator = ".").replace("-R0", "")) //.replace("-R0", "") << 1.x.x가 아닌 1.x 버전인 경우, R0이 포함될 수 있음.
     set("pluginLibraries", "")
 
     val pluginLibraries = LinkedHashSet<String>()
