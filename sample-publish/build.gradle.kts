@@ -20,22 +20,25 @@ publishing {
         maven {
             name = "central"
 
-            credentials.runCatching {
-                val nexusUsername: String by project
-                val nexusPassword: String by project
-                username = nexusUsername
-                password = nexusPassword
-            }.onFailure {
-                logger.warn("Failed to load nexus credentials, Check the gradle.properties")
+            credentials {
+                runCatching {
+                    val centralUsername: String by project
+                    val centralPassword: String by project
+                    username = centralUsername
+                    password = centralPassword
+                }.onFailure {
+                    logger.warn("Central credentials missing in gradle.properties")
+                }
             }
 
-            url = uri(
-                if ("SNAPSHOT" in version as String) {
-                    "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                } else {
-                    "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-                }
-            )
+            url =
+                uri(
+                    if ("SNAPSHOT" in version as String) {
+                        "https://central.sonatype.com/api/v1/publishing/snapshots"
+                    } else {
+                        "https://central.sonatype.com/api/v1/publishing/releases"
+                    },
+                )
         }
     }
 
@@ -48,7 +51,7 @@ publishing {
 
             pom {
                 name.set(target.name)
-                description.set("유튜브 \"서린\" 종합 프로젝트를 위한, 의존성 라이브러리입니다.")
+                description.set("유튜브 \"서린\"의 컨텐츠 서버 '잔혹한 추위'를 위한, 의존성 라이브러리입니다.")
                 url.set("https://github.com/monun/${rootProject.name}")
 
                 licenses {
@@ -70,9 +73,9 @@ publishing {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/seorin21/${rootProject.name}.git")
-                    developerConnection.set("scm:git:ssh://github.com:seorin21/${rootProject.name}.git")
-                    url.set("https://github.com/seorin21/${rootProject.name}")
+                    connection.set("scm:git:git://github.com/mulgyeolpyo/${rootProject.name}.git")
+                    developerConnection.set("scm:git:ssh://github.com:mulgyeolpyo/${rootProject.name}.git")
+                    url.set("https://github.com/mulgyeolpyo/${rootProject.name}")
                 }
             }
         }
@@ -85,7 +88,6 @@ publishing {
             setup(projectCore)
             artifact(coreReobfJar)
         }
-
     }
 }
 
