@@ -1,17 +1,15 @@
 [versions]
 kotlin = "2.1.0"
 dokka = "2.0.0"
+publish = "0.33.0"
 paper = "1.20-R0.1-SNAPSHOT"
 paperweight = "1.7.7"
-coroutines = "1.10.1"
-json = "1.8.0"
-protobuf = "1.8.0"
-
-[libraries]
-paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }
-coroutines = { group = "org.jetbrains.kotlinx", name="kotlinx-coroutines-core", version.ref = "coroutines" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
+publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
+
+[libraries]
+paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper" }

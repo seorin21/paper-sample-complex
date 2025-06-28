@@ -2,6 +2,33 @@ plugins {
     idea
     alias(libs.plugins.kotlin)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.publish) apply false
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+subprojects {
+    apply(
+        plugin =
+            rootProject.libs.plugins.kotlin
+                .get()
+                .pluginId,
+    )
+
+    repositories {
+        maven("https://repo.papermc.io/repository/maven-public/")
+    }
+
+    dependencies {
+        compileOnly(rootProject.libs.paper)
+        implementation(kotlin("stdlib"))
+        implementation(kotlin("reflect"))
+    }
 }
 
 java {
@@ -10,30 +37,14 @@ java {
     }
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-
-subprojects {
-    apply(plugin = rootProject.libs.plugins.kotlin.get().pluginId)
-
-    repositories {
-        maven("https://repo.papermc.io/repository/maven-public/")
-    }
-
-    dependencies {
-        compileOnly(rootProject.libs.paper)
-
-        implementation(kotlin("stdlib"))
-        implementation(kotlin("reflect"))
-    }
-}
-
 listOf(projectApi, projectCore).forEach { module ->
     with(module) {
-        apply(plugin = rootProject.libs.plugins.dokka.get().pluginId)
+        apply(
+            plugin =
+                rootProject.libs.plugins.dokka
+                    .get()
+                    .pluginId,
+        )
 
         tasks {
             create<Jar>("sourcesJar") {
@@ -45,32 +56,9 @@ listOf(projectApi, projectCore).forEach { module ->
                 archiveClassifier.set("javadoc")
                 dependsOn("dokkaHtml")
 
-                from("$buildDir/dokka/html/") {
+                from(layout.buildDirectory.dir("dokka/html")) {
                     include("**")
                 }
-            }
-        }
-    }
-}
-
-tasks {
-    register<DefaultTask>("setupModules") {
-        doLast {
-            val defaultPrefix = "sample"
-            val projectPrefix = rootProject.name
-
-            if (defaultPrefix != projectPrefix) {
-                fun rename(suffix: String) {
-                    val from = "$defaultPrefix-$suffix"
-                    val to = "$projectPrefix-$suffix"
-                    file(from).takeIf { it.exists() }?.renameTo(file(to))
-                }
-
-                rename("api")
-                rename("core")
-                rename("dongle")
-                rename("plugin")
-                rename("publish")
             }
         }
     }
@@ -79,7 +67,13 @@ tasks {
 idea {
     module {
         excludeDirs.add(file(".server"))
-        excludeDirs.addAll(allprojects.map { it.buildDir })
+        excludeDirs.addAll(
+            allprojects.map {
+                it.layout.buildDirectory
+                    .get()
+                    .asFile
+            },
+        )
         excludeDirs.addAll(allprojects.map { it.file(".gradle") })
     }
 }
