@@ -1,4 +1,4 @@
-# PaperMC plugin sample (1.17.1+)
+# PaperMC plugin sample complex (1.17.1+)
 
 [![Java](https://img.shields.io/badge/java-17-ED8B00.svg?logo=java)](https://www.azul.com/)
 [![Kotlin](https://img.shields.io/badge/kotlin-2.1.0-585DEF.svg?logo=kotlin)](http://kotlinlang.org)
@@ -6,9 +6,11 @@
 [![GitHub](https://img.shields.io/github/license/seorin21/paper-sample-complex)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Youtube](https://img.shields.io/badge/youtube-서린-red.svg?logo=youtube)](https://www.youtube.com/@seorin._.021)
 
+Forked by [monun/paper-sample-complex](https://github.com/monun/paper-sample-complex)
+
 ## 프로젝트 구성하기
 
-1. 저장소 복제 `git clone https://github.com/seorin21/paper-sample.git`
+1. 저장소 복제 `git clone https://github.com/seorin21/paper-sample-complex.git`
 2. 프로젝트 이름 변경 (`settings.gradle.kts` 의 `rootProject.name`)
 3. 구성 태스크 실행 `./gradlew setupModules`
 
@@ -52,3 +54,4 @@ PaperMC 와 상호작용할 JavaPlugin 을 포함한 코드
     * (gradle daemon이 api.jar 를 잡고 있음)
 * SNAPSHOT 버전일 경우 `plugin:clipJar` 태스크를 통한 플러그인이 서버에서 실행되지 않음
     * SNAPSHOT 버전은 항상 mavenCentral 에서 최신 버전을 확인하는데 실제로 서버에 존재하지 않아서 생기는 문제 
+* `./gradlew publishToMavenCentral`를 통한 배포 시, '-publish'이름을 가진 모듈로도 배포되는 문제 존재
