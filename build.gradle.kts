@@ -1,8 +1,16 @@
+import org.gradle.kotlin.dsl.register
+
 plugins {
     idea
     alias(libs.plugins.kotlin)
     alias(libs.plugins.dokka)
     alias(libs.plugins.publish) apply false
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
 }
 
 allprojects {
@@ -31,12 +39,6 @@ subprojects {
     }
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-}
-
 listOf(projectApi, projectCore).forEach { module ->
     with(module) {
         apply(
@@ -47,12 +49,12 @@ listOf(projectApi, projectCore).forEach { module ->
         )
 
         tasks {
-            create<Jar>("sourcesJar") {
+            this.register<Jar>("sourcesJar") {
                 archiveClassifier.set("sources")
                 from(sourceSets["main"].allSource)
             }
 
-            create<Jar>("dokkaJar") {
+            this.register<Jar>("dokkaJar") {
                 archiveClassifier.set("javadoc")
                 dependsOn("dokkaHtml")
 
