@@ -6,7 +6,7 @@
 [![GitHub](https://img.shields.io/github/license/seorin21/paper-sample-complex)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Youtube](https://img.shields.io/badge/youtube-서린-red.svg?logo=youtube)](https://www.youtube.com/@seorin._.021)
 
-Forked by [monun/paper-sample-complex](https://github.com/monun/paper-sample-complex)
+Forked by **[monun/paper-sample-complex](https://github.com/monun/paper-sample-complex)**
 
 ## 프로젝트 구성하기
 
