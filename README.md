@@ -32,7 +32,7 @@ API의 구현, 실제 실행 코드, `net.minecraft.server` 를 참조하는 코
 
 #### PLUGIN
 
-PaperMC 와 상호작용할 JavaPlugin 을 포함한 코드
+PaperMC 와 상호작용할 JavaPlugin을 포함한 코드
 
 * `./gradlew devJar` mojang mapped bundler jar
 * `./gradlew reobfJar` reobfusecated bundler jar
